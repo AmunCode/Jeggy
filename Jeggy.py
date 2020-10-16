@@ -76,10 +76,12 @@ for page in URLs:
 
 selection = searches.search_for_b_grade(B_Supply_Auctions)
 
-for item in B_Supply_Auctions:
-    if 'XR' in item.model:
-        print(item.specs())
+#tracer lines below to verify BSupply aution list is populated
+#for item in B_Supply_Auctions:
+#    if 'XR' in item.model:
+#       print(item.specs())
 
-for item in selection:
-    if 'XR' in item.model:
-        print(item.specs())
+#tracer lines below to verify Bsupply
+#for item in selection:
+#    if 'XR' in item.model:
+#        print(item.specs())
