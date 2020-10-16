@@ -1,6 +1,7 @@
 import bs4
 import requests
 import auctions
+import searches
 
 bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
 bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
@@ -33,7 +34,7 @@ for page in Pages:
                 URLs.append(link.attrs['href'])
 URLs = list(dict.fromkeys(URLs))
 
-Auctions = []
+B_Supply_Auctions = []
 
 for page in URLs:
     # print(page)
@@ -70,7 +71,15 @@ for page in URLs:
 
     listing = page
 
-    Auctions.append(auctions.auction(ID, model[1:], gigs, grade, count, price, listing))
+    B_Supply_Auctions.append(auctions.auction(ID, model[1:], gigs, grade, count, price, listing))
+    print(B_Supply_Auctions[-1].specs())
 
-for i in Auctions:
-    print(i.specs())
+selection = searches.search_for_b_grade(B_Supply_Auctions)
+
+for item in B_Supply_Auctions:
+    if 'XR' in item.model:
+        print(item.specs())
+
+for item in selection:
+    if 'XR' in item.model:
+        print(item.specs())
