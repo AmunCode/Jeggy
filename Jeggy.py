@@ -2,6 +2,10 @@ import bs4
 import requests
 import auctions
 import searches
+import xlwt
+from xlwt import Workbook
+
+workbook = Workbook()
 
 bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
 bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
@@ -85,3 +89,27 @@ selection = searches.search_for_b_grade(B_Supply_Auctions)
 #for item in selection:
 #    if 'XR' in item.model:
 #        print(item.specs())
+
+sheet = workbook.add_sheet("BStock Supply Auctions")
+row = 0
+col = 0
+
+for auction in B_Supply_Auctions:
+    sheet.write(row, col, auction.ID)
+    col = col + 1
+    sheet.write(row, col, auction.model)
+    col = col + 1
+    sheet.write(row, col, auction.gig)
+    col = col + 1
+    sheet.write(row, col, auction.grade)
+    col = col + 1
+    sheet.write(row, col, auction.count)
+    col = col + 1
+    sheet.write(row, col, auction.price)
+    col = col + 1
+    sheet.write(row, col, auction.link)
+    col = col + 1
+    row = row + 1
+    col = 0
+
+workbook.save('auctions.xls')
