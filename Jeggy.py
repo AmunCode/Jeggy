@@ -5,8 +5,6 @@ import searches
 import xlwt
 from xlwt import Workbook
 
-workbook = Workbook()
-
 bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
 bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
 
@@ -90,26 +88,49 @@ selection = searches.search_for_b_grade(B_Supply_Auctions)
 #    if 'XR' in item.model:
 #        print(item.specs())
 
-sheet = workbook.add_sheet("BStock Supply Auctions")
-row = 0
-col = 0
 
-for auction in B_Supply_Auctions:
-    sheet.write(row, col, auction.ID)
+def write_excel(b_supply_auctions):
+    workbook = Workbook()
+    sheet = workbook.add_sheet("BStock Supply Auctions")
+    row = 0
+    col = 0
+
+    sheet.write(row, col, 'ID')
     col = col + 1
-    sheet.write(row, col, auction.model)
+    sheet.write(row, col, 'Model')
     col = col + 1
-    sheet.write(row, col, auction.gig)
+    sheet.write(row, col, 'Gig')
     col = col + 1
-    sheet.write(row, col, auction.grade)
+    sheet.write(row, col, 'Grade')
     col = col + 1
-    sheet.write(row, col, auction.count)
+    sheet.write(row, col, 'Count')
     col = col + 1
-    sheet.write(row, col, auction.price)
+    sheet.write(row, col, 'Price')
     col = col + 1
-    sheet.write(row, col, auction.link)
-    col = col + 1
+    sheet.write(row, col, "Auction URL")
     row = row + 1
     col = 0
 
-workbook.save('auctions.xls')
+    for auction in b_supply_auctions:
+        sheet.write(row, col, auction.ID)
+        col = col + 1
+        sheet.write(row, col, auction.model)
+        col = col + 1
+        sheet.write(row, col, auction.gig)
+        col = col + 1
+        sheet.write(row, col, auction.grade)
+        col = col + 1
+        sheet.write(row, col, auction.count)
+        col = col + 1
+        sheet.write(row, col, auction.price)
+        col = col + 1
+        sheet.write(row, col, auction.link)
+        col = col + 1
+        row = row + 1
+        col = 0
+
+    workbook.save('auctions.xls')
+
+
+write_excel(B_Supply_Auctions)
+
