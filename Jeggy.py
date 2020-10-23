@@ -150,8 +150,8 @@ select_login_data = {
     'timezone': 'America/New_York',
     'user_code': '',
     'showPasswordField': 'true',
-    'loginId': '',              #change this to appropriate user
-    'password': ''              #chane this to appropriate user
+    'loginId': 'gregory@1804group.com',              #change this to appropriate user
+    'password': 'bstock#1031'              #chane this to appropriate user
 }
 superior_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
@@ -169,15 +169,15 @@ superior_login_data = {
     'timezone': 'America/New_York',
     'user_code': '',
     'showPasswordField': 'true',
-    'loginId': '',              #change this to appropriate user
-    'password': ''              #chane this to appropriate user
+    'loginId': 'gregory@1804group',              #change this to appropriate user
+    'password': 'bstock#1031'              #chane this to appropriate user
 }
 
 with requests.Session() as s:
     url = 'https://auth.bstock.com/oauth2/authorize'  # port url for login
     r = s.post(url, data=select_login_data)  # logs into site using login_data
     SupRes = s.get('https://selectmobile.bstock.com/?limit=96')
-    sbs = bs4.BeautifulSoup(SupRes.text)
+    sbs = bs4.BeautifulSoup(SupRes.text, 'lxml')
     # print (SupRes.content)
 
     SPages = []  # list to hold the pages with all the auction tiles
@@ -196,7 +196,7 @@ with requests.Session() as s:
     for sup_page in SPages:
         addOn = str(sup_page)
         s_page_res = s.get('https://selectmobile.bstock.com/?limit=96' + addOn)
-        s_page_bs = bs4.BeautifulSoup(s_page_res.text)
+        s_page_bs = bs4.BeautifulSoup(s_page_res.text, 'lxml')
         # scrapes the current page for all auctions listed on the page
         for link in s_page_bs.find_all('a'):
             if link.has_attr('href'):
