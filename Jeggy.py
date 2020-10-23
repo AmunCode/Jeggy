@@ -88,7 +88,6 @@ selection = searches.search_for_b_grade(B_Supply_Auctions)
 #    if 'XR' in item.model:
 #        print(item.specs())
 
-
 def write_excel(b_supply_auctions):
     workbook = Workbook()
     sheet = workbook.add_sheet("BStock Supply Auctions")
@@ -133,4 +132,43 @@ def write_excel(b_supply_auctions):
 
 
 write_excel(B_Supply_Auctions)
+
+select_login_data = {
+    'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
+    'code_challenge': '',
+    'code_challenge_method': '',
+    'metaData.device.name': 'Windows Chrome',
+    'metaData.device.type': 'BROWSER',
+    'nonce': '',
+    'redirect_uri': 'https://selectmobile.bstock.com/sso/index/login/',
+    'response_mode': '',
+    'response_type': 'code',
+    'scope': 'offline_access',
+    'state': 'isRedirect',
+    'tenantId': '17e51778-a4db-4dd3-b31e-1f990f373099',
+    'timezone': 'America/New_York',
+    'user_code': '',
+    'showPasswordField': 'true',
+    'loginId': '',              #change this to appropriate user
+    'password': ''              #chane this to appropriate user
+}
+superior_login_data = {
+    'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
+    'code_challenge': '',
+    'code_challenge_method': '',
+    'metaData.device.name': 'Windows Chrome',
+    'metaData.device.type': 'BROWSER',
+    'nonce': '',
+    'redirect_uri': 'https://superior.bstock.com/sso/index/login/',
+    'response_mode': '',
+    'response_type': 'code',
+    'scope': 'offline_access',
+    'state': 'isRedirect',
+    'tenantId': '17e51778-a4db-4dd3-b31e-1f990f373099',
+    'timezone': 'America/New_York',
+    'user_code': '',
+    'showPasswordField': 'true',
+    'loginId': '',              #change this to appropriate user
+    'password': ''              #chane this to appropriate user
+}
 
