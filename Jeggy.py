@@ -88,6 +88,7 @@ selection = searches.search_for_b_grade(B_Supply_Auctions)
 #    if 'XR' in item.model:
 #        print(item.specs())
 
+
 def write_excel(b_supply_auctions):
     workbook = Workbook()
     sheet = workbook.add_sheet("BStock Supply Auctions")
@@ -172,3 +173,77 @@ superior_login_data = {
     'password': ''              #chane this to appropriate user
 }
 
+with requests.Session() as s:
+    url = 'https://auth.bstock.com/oauth2/authorize'  # port url for login
+    r = s.post(url, data=select_login_data)  # logs into site using login_data
+    SupRes = s.get('https://selectmobile.bstock.com/?limit=96')
+    sbs = bs4.BeautifulSoup(SupRes.text)
+    # print (SupRes.content)
+
+    SPages = []  # list to hold the pages with all the auction tiles
+
+    for link in sbs.find_all('a'):
+        if link.has_attr('href'):
+            if 'p=' in link.attrs['href']:
+                print(link.string)
+                SPages.append(link.string)
+
+    SPages = list(dict.fromkeys(SPages))  # remove duplicates from pages that will be scrapped
+    # print(SPages)
+
+    supURLs = []  # list to hold the url of actual auction pages then polulates the array
+
+    for sup_page in SPages:
+        addOn = str(sup_page)
+        s_page_res = s.get('https://selectmobile.bstock.com/?limit=96' + addOn)
+        s_page_bs = bs4.BeautifulSoup(s_page_res.text)
+        # scrapes the current page for all auctions listed on the page
+        for link in s_page_bs.find_all('a'):
+            if link.has_attr('href'):
+                if 'auction' and 'view' in link.attrs['href']:
+                    # print (link.attrs['href']) #tracer line --remove from live code
+                    supURLs.append(link.attrs['href'])
+    supURLs = list(dict.fromkeys(supURLs))  # removes duplicate url entries from the list of URLs
+    supAuctionsItems = []
+    selectAuctionItems = []
+
+    for sup_page in supURLs:
+        print(sup_page)
+        auctionPage2 = s.get(sup_page)
+        soup2 = bs4.BeautifulSoup(auctionPage2.text, 'lxml')
+        soup2.find_all('div', attrs={"class": "auction-manifest"})
+        stuff = str(soup2.find_all('div', attrs={"class": "auction-manifest"}))
+        stuff.split()
+
+        rawManifestURL = ''
+        characters_to_remove = "',;"
+
+        for part in stuff.split():
+            if 'csv' in part:
+                print(part)
+                manifestURL = part
+                for character in characters_to_remove:
+                    manifestURL = manifestURL.replace(character, "")
+        # print(manifestURL)
+        wtf = s.get(manifestURL)
+        soup3 = bs4.BeautifulSoup(wtf.content, 'lxml')
+        downloadedManifest = (soup3.text)
+
+        wrManifest = downloadedManifest.split(',')  # list of items on manifest
+        # numOfItems = int((len(wrManifest)-10)/10)    ---for Superior Auctions
+        numOfItems = int((len(wrManifest) - 8) / 7)
+        print(numOfItems)
+        # startIndex = 10  ---for superior auctions
+        startIndex = 7
+
+        ID = sup_page.split('/')[-2]
+        price = float(soup2.find(id='unit_per_price_span').string[1:])
+        link = sup_page
+
+        startLoop = 1;
+        while startLoop <= numOfItems:
+            tempIndex = (startIndex * startLoop)
+            selectAuctionItems.append(auctions.selectAuction(tempIndex, wrManifest, ID, price, link))
+            startLoop = startLoop + 1
+            print(tempIndex)
+            print(startLoop)

@@ -43,20 +43,20 @@ class supAuction:
         return(self.ID+', '+self.make+', '+self.model+', '+self.grade+', '+self.count+', '+str(self.price)+', '+self.description+','
                + self.category+', '+self.network+', '+self.fID+', '+self.fName+', '+self.currency+', '+self.capacity+', '+self.link)
 
-    class selectAuction:
-        def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
-            self.ID = ID
-            self.price = price
-            self.link = listing
+class selectAuction:
+    def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
+        self.ID = ID
+        self.price = price
+        self.link = listing
 
-            self.make = manifest[startIndex + 1]
-            self.model = manifest[startIndex + 2]
-            self.network = manifest[startIndex + 3]
-            self.capacity = manifest[startIndex + 4]
-            self.grade = manifest[startIndex + 5]
-            self.count = manifest[startIndex + 6]
-            self.description = manifest[startIndex + 7]
+        self.make = manifest[startIndex + 1]
+        self.model = manifest[startIndex + 2]
+        self.network = manifest[startIndex + 3]
+        self.capacity = manifest[startIndex + 4]
+        self.grade = manifest[startIndex + 5]
+        self.count = manifest[startIndex + 6]
+        self.description = manifest[startIndex + 7]
 
-        def specs(self):
-            return (self.ID + ', ' + self.make + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' + str(
-                self.price) + ', ' + self.description + ', ' + self.network + ', ' + self.capacity + ', ' + self.link)
+    def specs(self):
+        return (self.ID + ', ' + self.make + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' + str(
+            self.price) + ', ' + self.description + ', ' + self.network + ', ' + self.capacity + ', ' + self.link)
