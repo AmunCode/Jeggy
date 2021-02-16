@@ -141,7 +141,7 @@ select_login_data = {
     'metaData.device.name': 'Windows Chrome',
     'metaData.device.type': 'BROWSER',
     'nonce': '',
-    'redirect_uri': 'https://selectmobile.bstock.com/sso/index/login/',
+    'redirect_uri': 'https://bstock.com/selectmobile/sso/index/login/',
     'response_mode': '',
     'response_type': 'code',
     'scope': 'offline_access',
@@ -151,7 +151,7 @@ select_login_data = {
     'user_code': '',
     'showPasswordField': 'true',
     'loginId': 'gregory@1804group.com',              #change this to appropriate user
-    'password': 'bstock#1031'              #chane this to appropriate user
+    'password': 'bstock#1031'                        #change this to appropriate user
 }
 superior_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
@@ -160,7 +160,7 @@ superior_login_data = {
     'metaData.device.name': 'Windows Chrome',
     'metaData.device.type': 'BROWSER',
     'nonce': '',
-    'redirect_uri': 'https://superior.bstock.com/sso/index/login/',
+    'redirect_uri': 'https://bstock.com/superior/sso/index/login/',
     'response_mode': '',
     'response_type': 'code',
     'scope': 'offline_access',
@@ -170,7 +170,7 @@ superior_login_data = {
     'user_code': '',
     'showPasswordField': 'true',
     'loginId': 'gregory@1804group',              #change this to appropriate user
-    'password': 'bstock#1031'              #chane this to appropriate user
+    'password': 'bstock#1031'                    #change this to appropriate user
 }
 
 with requests.Session() as s:
