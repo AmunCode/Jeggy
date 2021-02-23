@@ -1,6 +1,8 @@
 import bs4
 import requests
 import auctions
+import pandas
+import datetime as dt
 import searches
 import xlwt
 from xlwt import Workbook
@@ -8,131 +10,131 @@ from xlwt import Workbook
 bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
 bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
 
-print(bs.title)
-
-pages=[]
-for link in bs.find_all('a'):
-    if link.has_attr('href'):
-        if 'p=' in link.attrs['href']:
-            #print(link.string)
-            pages.append(link.string)
-Pages = list(dict.fromkeys(pages)) #remove duplicates from pages that will be scrapped
-
-for page in pages:
-    addOn = str(page)
-    print('https://bstocksupply.com/cell-phones?p='+addOn)
-
-URLs = []
-for page in Pages:
-    addOn = str(page)
-    page_res = requests.get('https://bstocksupply.com/cell-phones?p=' + addOn)
-    page_bs = bs4.BeautifulSoup(page_res.text, features='lxml')
-
-    # scrapes the current page for all auctions listed on the page
-    for link in page_bs.find_all('a'):
-        if link.has_attr('href'):
-            if 'auctions' in link.attrs['href']:
-                #print(link.attrs['href'])  # tracer line --remove from live code
-                URLs.append(link.attrs['href'])
-URLs = list(dict.fromkeys(URLs))
-
-B_Supply_Auctions = []
-
-for page in URLs:
-    # print(page)
-    # print(URLs[i])
-    auctionPage = requests.get(page)
-    # print(page)
-
-    soup1 = bs4.BeautifulSoup(auctionPage.text, 'lxml')
-    # print(soup1)
-
-    titleArr = soup1.title.string.split(',')
-    model = titleArr[0]
-    # print(model[1:])
-
-    gigs = titleArr[1]
-    # print(gigs[1:])
-
-    # grade = soup1.title.string.split(',')[6]
-    # print(grade[1:])
-    for part in titleArr:
-        if 'Grade' in part:
-            grade = part
-        elif 'Salvage' in part:
-            grade = 'Salvage'
-        elif 'New Condition' in part:
-            grade = 'New'
-        if 'Unit' in part:
-            count = part
-
-    price = soup1.find(id='unit_per_price_span').string[1:7]
-    price = price.strip('/')
-
-    ID = page.split('/')[-2]
-
-    listing = page
-
-    B_Supply_Auctions.append(auctions.auction(ID, model[1:], gigs, grade, count, price, listing))
-    print(B_Supply_Auctions[-1].specs())
-
-selection = searches.search_for_b_grade(B_Supply_Auctions)
-
-#tracer lines below to verify BSupply aution list is populated
-#for item in B_Supply_Auctions:
-#    if 'XR' in item.model:
-#       print(item.specs())
-
-#tracer lines below to verify Bsupply
-#for item in selection:
-#    if 'XR' in item.model:
-#        print(item.specs())
-
-
-def write_excel(b_supply_auctions):
-    workbook = Workbook()
-    sheet = workbook.add_sheet("BStock Supply Auctions")
-    row = 0
-    col = 0
-
-    sheet.write(row, col, 'ID')
-    col = col + 1
-    sheet.write(row, col, 'Model')
-    col = col + 1
-    sheet.write(row, col, 'Gig')
-    col = col + 1
-    sheet.write(row, col, 'Grade')
-    col = col + 1
-    sheet.write(row, col, 'Count')
-    col = col + 1
-    sheet.write(row, col, 'Price')
-    col = col + 1
-    sheet.write(row, col, "Auction URL")
-    row = row + 1
-    col = 0
-
-    for auction in b_supply_auctions:
-        sheet.write(row, col, auction.ID)
-        col = col + 1
-        sheet.write(row, col, auction.model)
-        col = col + 1
-        sheet.write(row, col, auction.gig)
-        col = col + 1
-        sheet.write(row, col, auction.grade)
-        col = col + 1
-        sheet.write(row, col, auction.count)
-        col = col + 1
-        sheet.write(row, col, auction.price)
-        col = col + 1
-        sheet.write(row, col, auction.link)
-        col = col + 1
-        row = row + 1
-        col = 0
-
-    workbook.save('auctions.xls')
-
-
-write_excel(B_Supply_Auctions)
+# print(bs.title)
+#
+# pages=[]
+# for link in bs.find_all('a'):
+#     if link.has_attr('href'):
+#         if 'p=' in link.attrs['href']:
+#             #print(link.string)
+#             pages.append(link.string)
+# Pages = list(dict.fromkeys(pages)) #remove duplicates from pages that will be scrapped
+#
+# for page in pages:
+#     addOn = str(page)
+#     print('https://bstocksupply.com/cell-phones?p='+addOn)
+#
+# URLs = []
+# for page in Pages:
+#     addOn = str(page)
+#     page_res = requests.get('https://bstocksupply.com/cell-phones?p=' + addOn)
+#     page_bs = bs4.BeautifulSoup(page_res.text, features='lxml')
+#
+#     # scrapes the current page for all auctions listed on the page
+#     for link in page_bs.find_all('a'):
+#         if link.has_attr('href'):
+#             if 'auctions' in link.attrs['href']:
+#                 #print(link.attrs['href'])  # tracer line --remove from live code
+#                 URLs.append(link.attrs['href'])
+# URLs = list(dict.fromkeys(URLs))
+#
+# B_Supply_Auctions = []
+#
+# for page in URLs:
+#     # print(page)
+#     # print(URLs[i])
+#     auctionPage = requests.get(page)
+#     # print(page)
+#
+#     soup1 = bs4.BeautifulSoup(auctionPage.text, 'lxml')
+#     # print(soup1)
+#
+#     titleArr = soup1.title.string.split(',')
+#     model = titleArr[0]
+#     # print(model[1:])
+#
+#     gigs = titleArr[1]
+#     # print(gigs[1:])
+#
+#     # grade = soup1.title.string.split(',')[6]
+#     # print(grade[1:])
+#     for part in titleArr:
+#         if 'Grade' in part:
+#             grade = part
+#         elif 'Salvage' in part:
+#             grade = 'Salvage'
+#         elif 'New Condition' in part:
+#             grade = 'New'
+#         if 'Unit' in part:
+#             count = part
+#
+#     price = soup1.find(id='unit_per_price_span').string[1:7]
+#     price = price.strip('/')
+#
+#     ID = page.split('/')[-2]
+#
+#     listing = page
+#
+#     B_Supply_Auctions.append(auctions.auction(ID, model[1:], gigs, grade, count, price, listing))
+#     print(B_Supply_Auctions[-1].specs())
+#
+# selection = searches.search_for_b_grade(B_Supply_Auctions)
+#
+# #tracer lines below to verify BSupply aution list is populated
+# #for item in B_Supply_Auctions:
+# #    if 'XR' in item.model:
+# #       print(item.specs())
+#
+# #tracer lines below to verify Bsupply
+# #for item in selection:
+# #    if 'XR' in item.model:
+# #        print(item.specs())
+#
+#
+# def write_excel(b_supply_auctions):
+#     workbook = Workbook()
+#     sheet = workbook.add_sheet("BStock Supply Auctions")
+#     row = 0
+#     col = 0
+#
+#     sheet.write(row, col, 'ID')
+#     col = col + 1
+#     sheet.write(row, col, 'Model')
+#     col = col + 1
+#     sheet.write(row, col, 'Gig')
+#     col = col + 1
+#     sheet.write(row, col, 'Grade')
+#     col = col + 1
+#     sheet.write(row, col, 'Count')
+#     col = col + 1
+#     sheet.write(row, col, 'Price')
+#     col = col + 1
+#     sheet.write(row, col, "Auction URL")
+#     row = row + 1
+#     col = 0
+#
+#     for auction in b_supply_auctions:
+#         sheet.write(row, col, auction.ID)
+#         col = col + 1
+#         sheet.write(row, col, auction.model)
+#         col = col + 1
+#         sheet.write(row, col, auction.gig)
+#         col = col + 1
+#         sheet.write(row, col, auction.grade)
+#         col = col + 1
+#         sheet.write(row, col, auction.count)
+#         col = col + 1
+#         sheet.write(row, col, auction.price)
+#         col = col + 1
+#         sheet.write(row, col, auction.link)
+#         col = col + 1
+#         row = row + 1
+#         col = 0
+#
+#     workbook.save('auctions.xls')
+#
+#
+# write_excel(B_Supply_Auctions)
 
 select_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
@@ -175,7 +177,7 @@ superior_login_data = {
 
 with requests.Session() as s:
     url = 'https://auth.bstock.com/oauth2/authorize'  # port url for login
-    r = s.post(url, data=select_login_data)  # logs into site using login_data
+    s.post(url, data=select_login_data)  # logs into site using login_data
     SupRes = s.get('https://selectmobile.bstock.com/?limit=96')
     sbs = bs4.BeautifulSoup(SupRes.text, 'lxml')
     # print (SupRes.content)
@@ -185,13 +187,13 @@ with requests.Session() as s:
     for link in sbs.find_all('a'):
         if link.has_attr('href'):
             if 'p=' in link.attrs['href']:
-                print(link.string)
+                #print(link.string)
                 SPages.append(link.string)
 
     SPages = list(dict.fromkeys(SPages))  # remove duplicates from pages that will be scrapped
     # print(SPages)
 
-    supURLs = []  # list to hold the url of actual auction pages then polulates the array
+    supURLs = []  # list to hold the url of actual auction pages then populates the array
 
     for sup_page in SPages:
         addOn = str(sup_page)
@@ -204,6 +206,7 @@ with requests.Session() as s:
                     # print (link.attrs['href']) #tracer line --remove from live code
                     supURLs.append(link.attrs['href'])
     supURLs = list(dict.fromkeys(supURLs))  # removes duplicate url entries from the list of URLs
+
     supAuctionsItems = []
     selectAuctionItems = []
 
@@ -240,10 +243,27 @@ with requests.Session() as s:
         price = float(soup2.find(id='unit_per_price_span').string[1:])
         link = sup_page
 
-        startLoop = 1;
+        startLoop = 1
         while startLoop <= numOfItems:
             tempIndex = (startIndex * startLoop)
-            selectAuctionItems.append(auctions.selectAuction(tempIndex, wrManifest, ID, price, link))
+            selectAuctionItems.append(auctions.SelectAuction(tempIndex, wrManifest, ID, price, link))
             startLoop = startLoop + 1
-            print(tempIndex)
-            print(startLoop)
+            #print(tempIndex)    #tracer line
+            #print(startLoop)    #tracer line
+
+
+
+
+    select_specs_list = []
+    for item in selectAuctionItems:
+        select_specs_list.append(item.specs().split(','))
+    df = pandas.DataFrame(select_specs_list,
+                          columns=['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network',
+                                   'Capacity', 'Auction URL'])
+
+    now = dt.datetime.now()
+
+    writer = pandas.ExcelWriter(f'{now.month}{now.day}{now.year}-{now.hour}h{now.minute}m Auction Data.xls')
+    df.to_excel(writer, sheet_name="Select Mobile Auctions", index=False)
+
+    writer.save()

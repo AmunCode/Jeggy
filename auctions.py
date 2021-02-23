@@ -1,4 +1,5 @@
-class auction:
+class Auction:
+
     def __init__(self, ID, model, gigs, grade, count, price, listing):
         self.ID = ID
         self.model = model
@@ -13,8 +14,8 @@ class auction:
                     self.ID + ', ' + self.model + ', ' + self.gig + ', ' + self.grade + ', ' + self.count + ', ' + self.price + ', ' + self.link)
 
 
-class supAuction:
-    def __init__(self, startIndex, manifest, ID = 'No ID', price = 'No price', listing = 'No link'):
+class SupAuction:
+    def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
         self.ID = ID
         try:
             self.make = manifest[startIndex].split()[1]
@@ -43,7 +44,8 @@ class supAuction:
         return(self.ID+', '+self.make+', '+self.model+', '+self.grade+', '+self.count+', '+str(self.price)+', '+self.description+','
                + self.category+', '+self.network+', '+self.fID+', '+self.fName+', '+self.currency+', '+self.capacity+', '+self.link)
 
-class selectAuction:
+
+class SelectAuction:
     def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
         self.ID = ID
         self.price = price
