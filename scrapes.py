@@ -1,10 +1,13 @@
 import requests
 import bs4
 import auctions
+import pandas
+import datetime as dt
 
 BSTOCK_USER_NAME = 'gregory@1804group.com'
 BSTOCK_PW = 'bstock#1031'
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
+SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 
 select_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
@@ -28,6 +31,18 @@ select_login_data = {
 
 superior_login_data = select_login_data
 superior_login_data['redirect_uri'] = 'https://bstock.com/superior/sso/index/login/'
+
+
+def write_scrape_data(auction_objects_list, auction_selected):
+    auction_specs_list = []
+    for item in auction_objects_list:
+        auction_specs_list.append(item.specs().split(','))
+    data_frame = pandas.DataFrame(auction_specs_list, columns=SELECT_COLUMNS)
+    now = dt.datetime.now()
+
+    writer = pandas.ExcelWriter(f'{now.month}{now.day}{now.year}-{now.hour}h{now.minute}m Auction Data.xls')
+    data_frame.to_excel(writer, sheet_name=f"{auction_selected} Auctions", index=False)
+    writer.save()
 
 
 def scrape(auction_selected: str):
@@ -120,7 +135,7 @@ def scrape(auction_selected: str):
                 select_auction_items.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
                 loop_counter = loop_counter + 1
 
-
+        write_scrape_data(select_auction_items, auction_selected)
 
 
 
