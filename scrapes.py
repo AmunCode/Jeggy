@@ -5,7 +5,7 @@ import pandas
 import datetime as dt
 
 BSTOCK_USER_NAME = 'gregory@1804group.com'
-BSTOCK_PW = 'bstock#1031'
+BSTOCK_PW = ''
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 
@@ -94,8 +94,6 @@ def scrape(auction_selected: str):
         # remove duplicate elements from auction_urls
         auction_urls = set(auction_urls)
 
-        auction_lot_items = []
-
         for page in auction_urls:
             # print(page)
             auction_lot_page = current_session.get(page)
@@ -103,7 +101,6 @@ def scrape(auction_selected: str):
             manifest_url_candidate = str(auction_lot_page_bs.find_all('div', attrs={"class": "auction-manifest"}))
             manifest_url_candidate.split()
 
-            rawManifestURL = ''
             characters_to_remove = "',;"
 
             for part in manifest_url_candidate.split():
@@ -136,12 +133,6 @@ def scrape(auction_selected: str):
                 loop_counter = loop_counter + 1
 
         write_scrape_data(select_auction_items, auction_selected)
-
-
-
-
-
-
 
 
 scrape("select auctions")
