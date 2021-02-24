@@ -1,13 +1,17 @@
 import bs4
 import requests
+import gui
 import auctions
 import pandas
 import datetime as dt
 import searches
 
 
-bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
-bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
+# bs_supply_site = requests.get('https://bstocksupply.com/cell-phones?')
+# bs = bs4.BeautifulSoup(bs_supply_site.text, features='lxml')
+
+window = gui.Window()
+
 
 # print(bs.title)
 #
