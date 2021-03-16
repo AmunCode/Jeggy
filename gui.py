@@ -1,7 +1,17 @@
 import tkinter as tk
+import scrapes
+import os
 
 
 class Window:
+    def scrape_select_auction(self):
+        scrapes.scrape('select auctions')
+
+    def scrape_superior_aution(self):
+        print("superior auction selected")
+
+    def scrape_Bsupply_acution(self):
+        print("B-supply action")
 
     def __init__(self):
         self.window = tk.Tk()
@@ -13,7 +23,13 @@ class Window:
         self.window.config(bg='light blue')
         background_img = tk.PhotoImage("images/JEGgo.png")
 
-        # background_lable.grid(row=0, column=0)
+        # create canvas to display over window.
+        self.canvas = tk.Canvas(self.window, width=660, height=460, bg='white')
+        self.canvas.place(relx=0.5, rely=0.5, anchor='center')
+
+        self.label = tk.Label(self.canvas, text='progress')
+        self.label.place(relx=0.1, rely=0.5)
+
         # Menus
         self.auctions_menu = tk.Menu(self.menu, tearoff=0)
         self.commHub_menu = tk.Menu(self.menu, tearoff=0)
@@ -28,10 +44,13 @@ class Window:
         self.auctions_menu.add_command(label="Scrape All")
         self.auctions_menu.add_cascade(label="Scrape", menu=self.scrape_menu)
 
-        self.scrape_menu.add_command(label="Superior Auctions")
-        self.scrape_menu.add_command(label="Select Mobile Auctions")
-        self.scrape_menu.add_command(label="B-Stock Supply Auctions")
+        # self.canvas.config(xpad=50, ypad=50)
+
+        self.scrape_menu.add_command(label="Superior Auctions", command=self.scrape_superior_aution)
+        self.scrape_menu.add_command(label="Select Mobile Auctions", command=self.scrape_select_auction)
+        self.scrape_menu.add_command(label="B-Stock Supply Auctions", command=self.scrape_Bsupply_acution)
 
         self.auctions_menu.add_command(label="Open")
 
         self.window.mainloop()
+

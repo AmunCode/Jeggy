@@ -5,7 +5,7 @@ import pandas
 import datetime as dt
 
 BSTOCK_USER_NAME = 'gregory@1804group.com'
-BSTOCK_PW = ''
+BSTOCK_PW = 'bstock#1031'
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 
@@ -109,7 +109,8 @@ def scrape(auction_selected: str):
                     for character in characters_to_remove:
                         manifest_url = manifest_url.replace(character, "")
 
-            # print(manifestURL)
+            print(manifest_url)
+
             manifest = current_session.get(manifest_url)
             manifest_bs = bs4.BeautifulSoup(manifest.content, 'lxml')
             downloaded_manifest = manifest_bs.text
@@ -135,5 +136,5 @@ def scrape(auction_selected: str):
         write_scrape_data(select_auction_items, auction_selected)
 
 
-scrape("select auctions")
+#scrape("select auctions")
 
