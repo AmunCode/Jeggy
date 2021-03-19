@@ -60,5 +60,6 @@ class SelectAuction:
         self.description = manifest[startIndex + 7]
 
     def specs(self):
-        return (self.ID + ', ' + self.make + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' + str(
-            self.price) + ', ' + self.description + ', ' + self.network + ', ' + self.capacity + ', ' + self.link)
+        return (str(self.ID) + ', ' + str(self.make) + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' +
+                str(self.price) + ', ' + str(self.description) + ', ' + str(self.network) + ', ' + str(self.capacity )+
+                ', ' + str(self.link))
