@@ -61,7 +61,7 @@ def scrape(auction_selected: str):
             superior_auction_items = []
             print('superior login')
         elif 'select' in auction_selected:
-            auction_page_prefix = 'https://selectmobile.bstock.com/?limit=96'
+            auction_page_prefix = 'https://selectmobile.bstock.com/?limit=96&p='
             current_session.post(AUTH_URL, select_login_data)
             select_auction_items = []
             print('select login')
@@ -91,6 +91,7 @@ def scrape(auction_selected: str):
         for page in auction_pages_list:
             suffix = str(page)
             auction_page = current_session.get(auction_page_prefix + suffix)
+            # print(auction_page_prefix + suffix)
             auction_page_bs = bs4.BeautifulSoup(auction_page.text, 'lxml')
             # scrape current page ofr individual auction URL that are tiled on the page
             for link in auction_page_bs.find_all('a'):
@@ -106,6 +107,8 @@ def scrape(auction_selected: str):
 
         # for page in auction_urls:
         def download_manifest(t_page):
+            print(f"Thread {threading.get_ident()} entering manifest download function with {t_page}.")
+            temp = []
             auction_lot_page = current_session.get(t_page)
             auction_lot_page_bs = bs4.BeautifulSoup(auction_lot_page.text, 'lxml')
             manifest_url_candidate = str(auction_lot_page_bs.find_all('div', attrs={"class": "auction-manifest"}))
@@ -140,31 +143,54 @@ def scrape(auction_selected: str):
             link = t_page
             loop_counter = 1
 
-            temp = []
+
+            # while len(temp) == 0:
             while loop_counter <= num_of_items:
                 temp_index = (start_index * loop_counter)
-            #     #select_auction_items.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
+                #     #select_auction_items.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
                 temp.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
                 loop_counter = loop_counter + 1
 
-            global select_auction_items
-            select_auction_items += temp
+            #global select_auction_items
+            #select_auction_items += temp
+            print(f"Thread {threading.get_ident()} with {t_page}......pushing temp")
+            print(temp)
+
             return temp
+            # if len(temp) > 0:
+            #     return temp
+            # else:
+            #     download_manifest(t_page)
+
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
-            # select_auction_items = [executor.map(download_manifest, page) for page in auction_urls]
-            for i in range(len(auction_urls)):
-                t = executor.submit(download_manifest, auction_urls[i])
-                # select_auction_items += (t.result())
+            select_auction_items = executor.map(download_manifest, auction_urls)
 
+            # for i in range(len(auction_urls)):
+            #     t = executor.submit(download_manifest, auction_urls[i])
+
+                # select_auction_items += (t.result())
         # index = 0
         # for _ in range(len(auction_urls)):
         #     t = threading.Thread(target=download_manifest, args=auction_urls[index])
         #     index += 1
         #     t.start()
 
-        for page in select_auction_items:
-            print(page.specs())
+        # for page in select_auction_items:
+        #     print(page.specs())
+
+        #print(type(select_auction_items))
+        testing = []
+        for item in select_auction_items:
+            try:
+                for i in item:
+                    testing.append(i)
+            except TypeError:
+                pass
+
+        print(len(testing))
+        for thing in testing:
+            print(thing.specs())
 
         #print(select_auction_items)
         print("--- %s seconds ---" % (time.time() - start_time))
@@ -177,7 +203,7 @@ def scrape(auction_selected: str):
         #     manifest_url_candidate.split()
         #
         #     characters_to_remove = "',;"
-        #
+        #     manifest_url = ''
         #     for part in manifest_url_candidate.split():
         #         if 'csv' in part:
         #             manifest_url = part
