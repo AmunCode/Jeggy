@@ -1,7 +1,7 @@
 import auctions
 
 
-def search_for_s_grade(list_to_check):
+def search_for_a_grade(list_to_check):
     selected = []
     for item in list_to_check:
         if 'A' in item.grade:

@@ -5,8 +5,6 @@ import auctions
 import pandas
 import datetime as dt
 import time
-import threading
-
 
 start_time = time.time()
 
@@ -31,7 +29,7 @@ select_login_data = {
     'timezone': 'America/New_York',
     'user_code': '',
     'showPasswordField': 'true',
-    'loginId': BSTOCK_USER_NAME,              #change this to appropriate user
+    'loginId': BSTOCK_USER_NAME,                 #change this to appropriate user
     'password': BSTOCK_PW                        #change this to appropriate user
 }
 
@@ -102,7 +100,7 @@ def scrape(auction_selected: str):
         # remove duplicate elements from auction_urls
         auction_urls = list(dict.fromkeys(auction_urls))
 
-        ####################################################################################
+        ######################################################################################
         ########################## Multi-thread ##############################################
 
         # for page in auction_urls:
@@ -145,49 +143,17 @@ def scrape(auction_selected: str):
                 link = t_page
                 loop_counter = 1
 
-
-
-                # print(f"Thread {threading.get_ident()} with {t_page}......enter 1 while loop")
-                # print(loop_counter)
-                # print(num_of_items)
-                # print(len(manifest_parts))
                 while loop_counter <= num_of_items:
                     temp_index = (start_index * loop_counter)
-                    #     #select_auction_items.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
                     temp.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
                     loop_counter = loop_counter + 1
                 if len(temp) > 0:
                     manifest_is_downloaded = True
-
-            # global select_auction_items
-            # select_auction_items += temp
-            # print(f"Thread {threading.get_ident()} with {t_page}......pushing temp")
-            # print(temp)
-
             return temp
-            # if len(temp) > 0:
-            #     return temp
-            # else:
-            #     download_manifest(t_page)
 
         with concurrent.futures.ThreadPoolExecutor() as executor:
             auction_lists = executor.map(download_manifest, auction_urls)
 
-            # for i in range(len(auction_urls)):
-            #     t = executor.submit(download_manifest, auction_urls[i])
-
-                # select_auction_items += (t.result())
-        # index = 0
-        # for _ in range(len(auction_urls)):
-        #     t = threading.Thread(target=download_manifest, args=auction_urls[index])
-        #     index += 1
-        #     t.start()
-
-        # for page in select_auction_items:
-        #     print(page.specs())
-
-        # print(type(select_auction_items))
-        # testing = []
         for listing in auction_lists:
             try:
                 for item in listing:
@@ -197,11 +163,6 @@ def scrape(auction_selected: str):
 
         write_scrape_data(select_auction_items, auction_selected)
 
-        # print(len(testing))
-        # for thing in testing:
-        #     print(thing.specs())
-
-        #print(select_auction_items)
         print("--- %s seconds ---" % (time.time() - start_time))
 
         # for page in auction_urls:
@@ -250,5 +211,5 @@ def scrape(auction_selected: str):
         # write_scrape_data(select_auction_items, auction_selected)
 
 
-scrape("select auctions")
+#scrape("select auctions")
 
