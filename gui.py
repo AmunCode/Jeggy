@@ -11,19 +11,49 @@ def run_select_auctions_scrape():
 
 
 def write_all_select_auction_data():
-    scrapes.write_scrape_data("select auctions")
+    scrapes.write_scrape_data_all("select auctions")
 
 def write_A_select_auction_data():
     stuff = searches.search_for_a_grade(scrapes.select_auction_items)
     print(len(stuff))
-    scrapes.print_this = stuff
+    scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions")
+
+def write_B_select_auction_data():
+    stuff = searches.search_for_b_grade(scrapes.select_auction_items)
+    print(len(stuff))
+    scrapes.copy_of_select_auction_items = stuff
+    print(len(scrapes.select_auction_items))
+    scrapes.write_filtered_scrape_data("select auctions")
+
+def write_C_select_auction_data():
+    stuff = searches.search_for_c_grade(scrapes.select_auction_items)
+    print(len(stuff))
+    scrapes.copy_of_select_auction_items = stuff
+    print(len(scrapes.select_auction_items))
+    scrapes.write_filtered_scrape_data("select auctions")
 
     #scrapes.write_scrape_data("select auctions")
 
+def write_apple_select_auction_data():
+    stuff = searches.search_for_apple(scrapes.select_auction_items)
+    print(len(stuff))
+    scrapes.copy_of_select_auction_items = stuff
+    print(len(scrapes.select_auction_items))
+    scrapes.write_filtered_scrape_data("select auctions")
+
+def write_samsung_select_auction_data():
+    stuff = searches.search_for_samsung(scrapes.select_auction_items)
+    print(len(stuff))
+    scrapes.copy_of_select_auction_items = stuff
+    print(len(scrapes.select_auction_items))
+    scrapes.write_filtered_scrape_data("select auctions")
+
+
+
 def write_all_auction_data():
-    scrapes.write_scrape_data("select auctions")
+    scrapes.write_scrape_data_all("select auctions")
 
 
 class Window:
@@ -90,6 +120,10 @@ class Window:
         self.export_menu.add_command(label="Export All Auctions", command=write_all_auction_data)
         self.export_menu.add_command(label="Export All Select Auctions", command=write_all_select_auction_data)
         self.export_menu.add_command(label="Export A Grade Auctions", command=write_A_select_auction_data)
+        self.export_menu.add_command(label="Export B Grade Auctions", command=write_B_select_auction_data)
+        self.export_menu.add_command(label="Export C Grade Auctions", command=write_C_select_auction_data)
+        self.export_menu.add_command(label="Export Apple only", command=write_apple_select_auction_data)
+        self.export_menu.add_command(label="Export Samsung only", command=write_samsung_select_auction_data)
 
         self.window.mainloop()
 
