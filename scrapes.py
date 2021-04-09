@@ -36,10 +36,12 @@ select_login_data = {
 superior_login_data = select_login_data
 superior_login_data['redirect_uri'] = 'https://bstock.com/superior/sso/index/login/'
 
+# def write_scrape_data(auction_objects_list, auction_selected):
 
-def write_scrape_data(auction_objects_list, auction_selected):
+
+def write_scrape_data(auction_selected):
     auction_specs_list = []
-    for item in auction_objects_list:
+    for item in select_auction_items:
         auction_specs_list.append(item.specs().split(','))
     data_frame = pandas.DataFrame(auction_specs_list, columns=SELECT_COLUMNS)
     now = dt.datetime.now()
@@ -79,6 +81,8 @@ def scrape(auction_selected: str):
                     # add given link to list of all auctions
                     auction_pages_list.append(link.string)
                     print(link.string)
+                else:
+                    auction_pages_list.append("NONE")
 
         # remove duplicate elements from auction_pages_list
         auction_pages_list = set(auction_pages_list)
@@ -103,7 +107,7 @@ def scrape(auction_selected: str):
         ######################################################################################
         ########################## Multi-thread ##############################################
 
-        # for page in auction_urls:
+        #for page in auction_urls:
         def download_manifest(t_page):
             # print(f"Thread {threading.get_ident()} entering manifest download function with {t_page}.")
             temp = []
@@ -151,7 +155,7 @@ def scrape(auction_selected: str):
                     manifest_is_downloaded = True
             return temp
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(4) as executor:
             auction_lists = executor.map(download_manifest, auction_urls)
 
         for listing in auction_lists:
@@ -161,7 +165,7 @@ def scrape(auction_selected: str):
             except TypeError:
                 pass
 
-        write_scrape_data(select_auction_items, auction_selected)
+        #write_scrape_data(select_auction_items, auction_selected)
 
         print("--- %s seconds ---" % (time.time() - start_time))
 
