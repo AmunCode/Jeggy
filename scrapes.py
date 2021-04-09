@@ -13,6 +13,7 @@ BSTOCK_PW = 'bstock#1031'
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 select_auction_items = []
+copy_of_select_auction_items = []
 select_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
     'code_challenge': '',
@@ -36,8 +37,7 @@ select_login_data = {
 superior_login_data = select_login_data
 superior_login_data['redirect_uri'] = 'https://bstock.com/superior/sso/index/login/'
 
-# def write_scrape_data(auction_objects_list, auction_selected):
-
+back_up = select_auction_items
 
 def write_scrape_data(auction_selected):
     auction_specs_list = []

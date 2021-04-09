@@ -1,11 +1,29 @@
 import tkinter as tk
 import scrapes
 import threading
+import auctions
+import searches
 import os
 
 
 def run_select_auctions_scrape():
     scrapes.scrape("select auctions")
+
+
+def write_all_select_auction_data():
+    scrapes.write_scrape_data("select auctions")
+
+def write_A_select_auction_data():
+    stuff = searches.search_for_a_grade(scrapes.select_auction_items)
+    print(len(stuff))
+    scrapes.print_this = stuff
+    print(len(scrapes.select_auction_items))
+    scrapes.write_scrape_data("select auctions")
+
+    #scrapes.write_scrape_data("select auctions")
+
+def write_all_auction_data():
+    scrapes.write_scrape_data("select auctions")
 
 
 class Window:
@@ -18,11 +36,8 @@ class Window:
         t1 = threading.Thread(target=run_select_auctions_scrape)
         t1.start()
         while t1.is_alive():
-            self.canvas.itemconfigure(self.working, text="something else")
+            self.canvas.itemconfigure(self.working, text="Data Collected")
             # scrapes.scrape('select auctions')
-
-    def write_auction_data(self):
-        scrapes.write_scrape_data("select auctions")
 
     def scrape_superior_aution(self):
         print("superior auction selected")
@@ -59,7 +74,7 @@ class Window:
         # cascade set for each menu
         self.menu.add_cascade(label='Auctions', menu=self.auctions_menu)
         self.menu.add_cascade(label='CommerceHUB', menu=self.commHub_menu)
-        self.menu.add_cascade(label='Export Data', menu=self.export_menu)
+        self.menu.add_cascade(label='Excel Export', menu=self.export_menu)
         self.menu.add_cascade(label='Help', menu=self.help_menu)
 
         # options under the Auctions menu option
@@ -72,7 +87,9 @@ class Window:
         self.scrape_menu.add_command(label="Select Mobile Auctions", command=self.scrape_select_auction)
         self.scrape_menu.add_command(label="B-Stock Supply Auctions", command=self.scrape_Bsupply_acution)
 
-        self.export_menu.add_command(label="Export to Excel", command=self.write_auction_data)
+        self.export_menu.add_command(label="Export All Auctions", command=write_all_auction_data)
+        self.export_menu.add_command(label="Export All Select Auctions", command=write_all_select_auction_data)
+        self.export_menu.add_command(label="Export A Grade Auctions", command=write_A_select_auction_data)
 
         self.window.mainloop()
 
