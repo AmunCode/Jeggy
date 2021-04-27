@@ -89,7 +89,7 @@ class Window:
         self.canvas = tk.Canvas(self.window, width=660, height=460, bg='white')
         self.canvas.place(relx=0.5, rely=0.5, anchor='center')
 
-        self.working = self.canvas.create_text(330, 230, text="where is this")
+        self.working = self.canvas.create_text(330, 230, text="Ready...")
 
         # self.label = tk.Label(self.canvas, text='')
         # self.label.place(relx=0.1, rely=0.5)

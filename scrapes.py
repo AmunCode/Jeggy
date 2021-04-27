@@ -9,7 +9,7 @@ import time
 start_time = time.time()
 
 BSTOCK_USER_NAME = 'gregory@1804group.com'
-BSTOCK_PW = 'bstock#1031'
+BSTOCK_PW = 'Adoune#1031'
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 select_auction_items = []
@@ -67,7 +67,7 @@ def scrape(auction_selected: str):
         global select_auction_items
         # check the auction_selected and log into the appropriate auctions.
         if 'superior' in auction_selected:
-            current_session.post(AUTH_URL, data=superior_login_data)
+            current_session.post(AUTH_URL, superior_login_data)
             auction_page_prefix = 'https://bstock.com/superior/auction/auction/list/?limit=96&p='
             superior_auction_items = []
             print('superior login')
@@ -104,7 +104,7 @@ def scrape(auction_selected: str):
         for page in auction_pages_list:
             suffix = str(page)
             auction_page = current_session.get(auction_page_prefix + suffix)
-            # print(auction_page_prefix + suffix)
+            #print(auction_page_prefix + suffix)
             auction_page_bs = bs4.BeautifulSoup(auction_page.text, 'lxml')
             # scrape current page ofr individual auction URL that are tiled on the page
             for link in auction_page_bs.find_all('a'):
@@ -114,7 +114,7 @@ def scrape(auction_selected: str):
 
         # remove duplicate elements from auction_urls
         auction_urls = list(dict.fromkeys(auction_urls))
-
+        print(len(auction_urls))
         ######################################################################################
         ########################## Multi-thread ##############################################
 
@@ -169,12 +169,22 @@ def scrape(auction_selected: str):
         with concurrent.futures.ThreadPoolExecutor(4) as executor:
             auction_lists = executor.map(download_manifest, auction_urls)
 
-        for listing in auction_lists:
-            try:
-                for item in listing:
-                    select_auction_items.append(item)
-            except TypeError:
-                pass
+        if auction_selected == 'select auctions':
+            for listing in auction_lists:
+                try:
+                    for item in listing:
+                        select_auction_items.append(item)
+                except TypeError:
+                    pass
+        elif auction_selected == 'superior auctions':
+            for listing in auction_lists:
+                try:
+                    for item in listing:
+                        print("here")
+                        select_auction_items.append(item)
+                        # superior_auction_items.append(item)
+                except TypeError:
+                    pass
 
         #write_scrape_data(select_auction_items, auction_selected)
 
@@ -226,5 +236,5 @@ def scrape(auction_selected: str):
         # write_scrape_data(select_auction_items, auction_selected)
 
 
-#scrape("select auctions")
+# scrape("superior auctions")
 
