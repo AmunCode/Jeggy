@@ -172,7 +172,10 @@ def scrape(auction_selected: str):
 
                 while loop_counter <= num_of_items:
                     temp_index = (start_index * loop_counter)
-                    temp.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
+                    if 'select' in auction_selected:
+                        temp.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
+                    elif 'superior' in auction_selected:
+                        temp.append(auctions.SupAuction(temp_index, manifest_parts, auction_id, price, link))
                     loop_counter = loop_counter + 1
                 if len(temp) > 0:
                     manifest_is_downloaded = True

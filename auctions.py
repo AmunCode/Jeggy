@@ -41,9 +41,11 @@ class SupAuction:
         self.link = listing
 
     def specs(self):
-        return(self.ID+', '+self.make+', '+self.model+', '+self.grade+', '+self.count+', '+str(self.price)+', '+self.description+','
-               + self.category+', '+self.network+', '+self.fID+', '+self.fName+', '+self.currency+', '+self.capacity+', '+self.link)
-
+        # return(self.ID+', '+self.make+', '+self.model+', '+self.grade+', '+self.count+', '+str(self.price)+', '+self.description+','
+        #        + self.category+', '+self.network+', '+self.fID+', '+self.fName+', '+self.currency+', '+self.capacity+', '+self.link)
+        return (str(self.ID) + ', ' + str(self.make) + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' +
+                str(self.price) + ', ' + str(self.description) + ', ' + str(self.network) + ', ' + str(self.capacity) +
+                ', ' + str(self.link))
 
 class SelectAuction:
     def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
@@ -61,5 +63,5 @@ class SelectAuction:
 
     def specs(self):
         return (str(self.ID) + ', ' + str(self.make) + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' +
-                str(self.price) + ', ' + str(self.description) + ', ' + str(self.network) + ', ' + str(self.capacity )+
+                str(self.price) + ', ' + str(self.description) + ', ' + str(self.network) + ', ' + str(self.capacity) +
                 ', ' + str(self.link))
