@@ -5,13 +5,19 @@ import auctions
 import searches
 import os
 
+################## Scraping Functions #######################################
 
 def run_select_auctions_scrape():
     scrapes.scrape("select auctions")
 
+def run_superior_auctions_scrape():
+    scrapes.scrape("superior auctions")
+
 
 def write_all_select_auction_data():
     scrapes.write_scrape_data_all("select auctions")
+
+################## Writing to Excel File Functions ##########################
 
 def write_A_select_auction_data():
     stuff = searches.search_for_a_grade(scrapes.select_auction_items)
@@ -63,17 +69,23 @@ class Window:
             self.canvas.itemconfig(self.working, text="working stiff")
 
     def scrape_select_auction(self):
+        print("Select auction selected")
         t1 = threading.Thread(target=run_select_auctions_scrape)
         t1.start()
         while t1.is_alive():
-            self.canvas.itemconfigure(self.working, text="Data Collected")
+            self.canvas.itemconfigure(self.working, text="Select Mobile Auctions Data Collected")
             # scrapes.scrape('select auctions')
 
     def scrape_superior_aution(self):
         print("superior auction selected")
+        t2 = threading.Thread(target=run_superior_auctions_scrape)
+        t2.start()
+        while t2.is_alive():
+            self.canvas.itemconfigure(self.working, text="Superior Wireless Auction Data Collected")
 
     def scrape_Bsupply_acution(self):
         print("B-supply action")
+
 
     def __init__(self):
         self.window = tk.Tk()

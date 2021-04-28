@@ -12,8 +12,13 @@ BSTOCK_USER_NAME = 'gregory@1804group.com'
 BSTOCK_PW = 'Adoune#1031'
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
+
 select_auction_items = []
 copy_of_select_auction_items = []
+superior_auction_items = []
+copy_of_superior_auction_items = []
+auction_specs_list = []
+
 select_login_data = {
     'client_id': '1b094c5f-c8a6-416c-8c62-4dc77ca88ce9',
     'code_challenge': '',
@@ -40,9 +45,14 @@ superior_login_data['redirect_uri'] = 'https://bstock.com/superior/sso/index/log
 back_up = select_auction_items
 
 def write_scrape_data_all(auction_selected):
-    auction_specs_list = []
-    for item in select_auction_items:
-        auction_specs_list.append(item.specs().split(','))
+    # auction_specs_list = []
+    if 'select' in auction_selected:
+        for item in select_auction_items:
+            auction_specs_list.append(item.specs().split(','))
+    elif 'superior' in auction_selected:
+        for item in superior_auction_items:
+            auction_specs_list.append(item.specs().split(','))
+
     data_frame = pandas.DataFrame(auction_specs_list, columns=SELECT_COLUMNS)
     now = dt.datetime.now()
 
@@ -65,6 +75,7 @@ def write_filtered_scrape_data(auction_selected):
 def scrape(auction_selected: str):
     with requests.session() as current_session:
         global select_auction_items
+        global superior_auction_items
         # check the auction_selected and log into the appropriate auctions.
         if 'superior' in auction_selected:
             current_session.post(AUTH_URL, superior_login_data)
@@ -80,7 +91,7 @@ def scrape(auction_selected: str):
             print("Target auction not support")
 
         # Pull the main landing page and convert it over to a bs object (easier to parse)
-        auction_landing_page = current_session.get('https://selectmobile.bstock.com/?limit=96')
+        auction_landing_page = current_session.get(auction_page_prefix)
         auction_landing_page_bs = bs4.BeautifulSoup(auction_landing_page.text, 'lxml')
 
         # list to hold the pages with all the auction tiles
@@ -115,6 +126,7 @@ def scrape(auction_selected: str):
         # remove duplicate elements from auction_urls
         auction_urls = list(dict.fromkeys(auction_urls))
         print(len(auction_urls))
+
         ######################################################################################
         ########################## Multi-thread ##############################################
 
@@ -187,54 +199,11 @@ def scrape(auction_selected: str):
                     pass
 
         #write_scrape_data(select_auction_items, auction_selected)
+        # for item in select_auction_items:
+        #     print(item.specs())
 
         print("--- %s seconds ---" % (time.time() - start_time))
 
-        # for page in auction_urls:
-        #     # print(page)
-        #     auction_lot_page = current_session.get(page)
-        #     auction_lot_page_bs = bs4.BeautifulSoup(auction_lot_page.text, 'lxml')
-        #     manifest_url_candidate = str(auction_lot_page_bs.find_all('div', attrs={"class": "auction-manifest"}))
-        #     manifest_url_candidate.split()
-        #
-        #     characters_to_remove = "',;"
-        #     manifest_url = ''
-        #     for part in manifest_url_candidate.split():
-        #         if 'csv' in part:
-        #             manifest_url = part
-        #             for character in characters_to_remove:
-        #                 manifest_url = manifest_url.replace(character, "")
-        #
-        #     print(manifest_url)
-        #
-        #     manifest = current_session.get(manifest_url)
-        #     manifest_bs = bs4.BeautifulSoup(manifest.content, 'lxml')
-        #     downloaded_manifest = manifest_bs.text
-        #
-        #     manifest_parts = downloaded_manifest.split(',')  # items listed on manifest
-        #     if 'superior' in auction_selected:
-        #         num_of_items = int((len(manifest_parts)-10)/10)
-        #         start_index = 10
-        #     elif 'select' in auction_selected:
-        #         num_of_items = int((len(manifest_parts) - 8) / 7)
-        #         start_index = 7
-        #
-        #     auction_id = page.split('/')[-2]
-        #     price = float(auction_lot_page_bs.find(id='unit_per_price_span').string[1:])
-        #     link = page
-        #
-        #     loop_counter = 1
-        #     while loop_counter <= num_of_items:
-        #         temp_index = (start_index * loop_counter)
-        #         select_auction_items.append(auctions.SelectAuction(temp_index, manifest_parts, auction_id, price, link))
-        #         loop_counter = loop_counter + 1
-        #
-        # for page in select_auction_items:
-        #     print(page.specs())
-        #
-        # print("--- %s seconds ---" % (time.time() - start_time))
-        # write_scrape_data(select_auction_items, auction_selected)
-
-
-# scrape("superior auctions")
+#scrape("superior auctions")
+#scrape("select auctions")
 
