@@ -5,62 +5,79 @@ import auctions
 import searches
 import os
 
-################## Scraping Functions #######################################
+# ---------------------- Scraping Functions -------------------------------------#
+# ---------------------- Scraping Functions -------------------------------------#
+
 
 def run_select_auctions_scrape():
     scrapes.scrape("select auctions")
+
 
 def run_superior_auctions_scrape():
     scrapes.scrape("superior auctions")
 
 
+# --------------------- Writing to Excel File Functions -------------------------#
+# --------------------- Writing to Excel File Functions -------------------------#
+
+def write_all_auction_data():
+    scrapes.write_scrape_data_all()
+
+
+def write_all_superior_auction_data():
+    scrapes.write_scrape_data_all("superior auctions")
+
+
 def write_all_select_auction_data():
     scrapes.write_scrape_data_all("select auctions")
 
-################## Writing to Excel File Functions ##########################
 
 def write_A_select_auction_data():
-    stuff = searches.search_for_a_grade(scrapes.select_auction_items)
+    stuff = searches.search_for_a_grade(scrapes.select_auction_items) + \
+            searches.search_for_a_grade(scrapes.superior_auction_items)
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
     scrapes.write_filtered_scrape_data("select auctions")
+
 
 def write_B_select_auction_data():
-    stuff = searches.search_for_b_grade(scrapes.select_auction_items)
+    stuff = searches.search_for_b_grade(scrapes.select_auction_items) + \
+            searches.search_for_b_grade(scrapes.superior_auction_items)
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
     scrapes.write_filtered_scrape_data("select auctions")
+
 
 def write_C_select_auction_data():
-    stuff = searches.search_for_c_grade(scrapes.select_auction_items)
+    stuff = searches.search_for_c_grade(scrapes.select_auction_items) + \
+            searches.search_for_c_grade(scrapes.superior_auction_items)
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
     scrapes.write_filtered_scrape_data("select auctions")
 
-    #scrapes.write_scrape_data("select auctions")
 
 def write_apple_select_auction_data():
-    stuff = searches.search_for_apple(scrapes.select_auction_items)
+    stuff = searches.search_for_apple(scrapes.select_auction_items) + \
+            searches.search_for_apple(scrapes.superior_auction_items)
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
     scrapes.write_filtered_scrape_data("select auctions")
+
 
 def write_samsung_select_auction_data():
-    stuff = searches.search_for_samsung(scrapes.select_auction_items)
+    stuff = searches.search_for_samsung(scrapes.select_auction_items) + \
+            searches.search_for_samsung(scrapes.superior_auction_items)
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
     scrapes.write_filtered_scrape_data("select auctions")
 
-
-
-def write_all_auction_data():
-    scrapes.write_scrape_data_all("select auctions")
-
+# ------------------------- GUI WINDOW --------------------------------------------------- #
+# ------------------------- GUI WINDOW --------------------------------------------------- #
 
 class Window:
     def animated_working(self):
@@ -86,28 +103,26 @@ class Window:
     def scrape_Bsupply_acution(self):
         print("B-supply action")
 
-
     def __init__(self):
         self.window = tk.Tk()
         self.window.title('Jeggy')
         self.window.iconbitmap(".\images\jeggo_4Bf_icon.ico")
         self.menu = tk.Menu(self.window)
         self.window.config(menu=self.menu)
-        self.window.geometry("680x480")
+        self.window.geometry("570x170")
         self.window.config(bg='light blue')
         background_img = tk.PhotoImage("images/JEGgo.png")
 
         # create canvas to display over window.
-        self.canvas = tk.Canvas(self.window, width=660, height=460, bg='white')
+        self.canvas = tk.Canvas(self.window, width=560, height=160, bg='white')
         self.canvas.place(relx=0.5, rely=0.5, anchor='center')
 
-        self.working = self.canvas.create_text(330, 230, text="Ready...")
+        self.working = self.canvas.create_text(280, 80, text="Ready...")
 
         # self.label = tk.Label(self.canvas, text='')
         # self.label.place(relx=0.1, rely=0.5)
 
-
-        # Menus
+        ############################# Menus ##############################################
         self.auctions_menu = tk.Menu(self.menu, tearoff=0)
         self.commHub_menu = tk.Menu(self.menu, tearoff=0)
         self.export_menu = tk.Menu(self.menu, tearoff=0)
@@ -130,7 +145,8 @@ class Window:
         self.scrape_menu.add_command(label="B-Stock Supply Auctions", command=self.scrape_Bsupply_acution)
 
         self.export_menu.add_command(label="Export All Auctions", command=write_all_auction_data)
-        self.export_menu.add_command(label="Export All Select Auctions", command=write_all_select_auction_data)
+        self.export_menu.add_command(label="Export Select Mobile Auctions", command=write_all_select_auction_data)
+        self.export_menu.add_command(label="Export Superior Wireless Auctions", command=write_all_superior_auction_data)
         self.export_menu.add_command(label="Export A Grade Auctions", command=write_A_select_auction_data)
         self.export_menu.add_command(label="Export B Grade Auctions", command=write_B_select_auction_data)
         self.export_menu.add_command(label="Export C Grade Auctions", command=write_C_select_auction_data)
