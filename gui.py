@@ -1,9 +1,11 @@
 import tkinter as tk
 import scrapes
 import threading
-import auctions
+import concurrent.futures
 import searches
 import os
+
+scrape_running = True
 
 # ---------------------- Scraping Functions -------------------------------------#
 # ---------------------- Scraping Functions -------------------------------------#
@@ -94,7 +96,6 @@ class Window:
             # scrapes.scrape('select auctions')
 
     def scrape_superior_aution(self):
-        print("superior auction selected")
         t2 = threading.Thread(target=run_superior_auctions_scrape)
         t2.start()
         while t2.is_alive():
@@ -109,15 +110,16 @@ class Window:
         self.window.iconbitmap(".\images\jeggo_4Bf_icon.ico")
         self.menu = tk.Menu(self.window)
         self.window.config(menu=self.menu)
-        self.window.geometry("570x170")
-        self.window.config(bg='light blue')
+        # self.window.geometry("570x170")
+        self.window.config(padx=20, pady= 20, bg='light blue')
         background_img = tk.PhotoImage("images/JEGgo.png")
 
         # create canvas to display over window.
         self.canvas = tk.Canvas(self.window, width=560, height=160, bg='white')
-        self.canvas.place(relx=0.5, rely=0.5, anchor='center')
+        # self.canvas.place(relx=0.5, rely=0.5, anchor='center')
+        self.canvas.grid(row=0, column=0)
 
-        self.working = self.canvas.create_text(280, 80, text="Ready...")
+        self.working = self.canvas.create_text(280, 80, text="Ready............")
 
         # self.label = tk.Label(self.canvas, text='')
         # self.label.place(relx=0.1, rely=0.5)
@@ -140,9 +142,16 @@ class Window:
 
         # self.canvas.config(xpad=50, ypad=50)
         # actions under each menu
+
+        # -------------------------------Scrapes--------------------------------------------------------------------- #
+        # -------------------------------Scrapes--------------------------------------------------------------------- #
+
         self.scrape_menu.add_command(label="Superior Auctions", command=self.scrape_superior_aution)
         self.scrape_menu.add_command(label="Select Mobile Auctions", command=self.scrape_select_auction)
         self.scrape_menu.add_command(label="B-Stock Supply Auctions", command=self.scrape_Bsupply_acution)
+
+        # -------------------------------Exports--------------------------------------------------------------------- #
+        # -------------------------------Exports--------------------------------------------------------------------- #
 
         self.export_menu.add_command(label="Export All Auctions", command=write_all_auction_data)
         self.export_menu.add_command(label="Export Select Mobile Auctions", command=write_all_select_auction_data)
