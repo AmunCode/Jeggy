@@ -104,6 +104,12 @@ class Window:
     def scrape_Bsupply_acution(self):
         print("B-supply action")
 
+    def on_screen_output(self):
+        item_list = scrapes.select_auction_items
+        for item in item_list:
+            label = tk.Label(self.canvas, text=str(item.specs()))
+            label.pack()
+
     def __init__(self):
         self.window = tk.Tk()
         self.window.title('Jeggy')
@@ -138,6 +144,7 @@ class Window:
 
         # options under the Auctions menu option
         self.auctions_menu.add_command(label="Scrape All")
+        self.auctions_menu.add_command(label="Display Results", command=self.on_screen_output)
         self.auctions_menu.add_cascade(label="Scrape", menu=self.scrape_menu)
 
         # self.canvas.config(xpad=50, ypad=50)

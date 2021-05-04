@@ -124,7 +124,7 @@ def scrape(auction_selected: str):
         for page in auction_pages_list:
             suffix = str(page)
             auction_page = current_session.get(auction_page_prefix + suffix)
-            #print(auction_page_prefix + suffix)
+            print(auction_page_prefix + suffix)
             auction_page_bs = bs4.BeautifulSoup(auction_page.text, 'lxml')
             # scrape current page ofr individual auction URL that are tiled on the page
             for link in auction_page_bs.find_all('a'):
