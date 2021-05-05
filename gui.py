@@ -121,11 +121,11 @@ class Window:
         background_img = tk.PhotoImage("images/JEGgo.png")
 
         # create canvas to display over window.
-        self.canvas = tk.Canvas(self.window, width=560, height=160, bg='white')
+        self.canvas = tk.Canvas(self.window, width=800, height=160, bg='white')
         # self.canvas.place(relx=0.5, rely=0.5, anchor='center')
         self.canvas.grid(row=0, column=0)
 
-        self.working = self.canvas.create_text(280, 80, text="Ready............")
+        self.working = self.canvas.create_text(400, 80, text="Ready............")
 
         # self.label = tk.Label(self.canvas, text='')
         # self.label.place(relx=0.1, rely=0.5)

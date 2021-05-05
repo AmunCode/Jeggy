@@ -204,7 +204,6 @@ def scrape(auction_selected: str):
             for listing in auction_lists:
                 try:
                     for item in listing:
-                        print("here")
                         superior_auction_items.append(item)
                         # superior_auction_items.append(item)
                 except TypeError:
