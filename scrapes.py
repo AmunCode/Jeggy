@@ -44,6 +44,7 @@ superior_login_data['redirect_uri'] = 'https://bstock.com/superior/sso/index/log
 
 back_up = select_auction_items
 
+
 def write_scrape_data_all(auction_selected="default"):
     # auction_specs_list = []
     global auction_specs_list
@@ -69,14 +70,15 @@ def write_scrape_data_all(auction_selected="default"):
     data_frame.to_excel(writer, sheet_name="All Auctions", index=False)
     writer.save()
 
-def write_filtered_scrape_data(auction_selected):
+
+def write_filtered_scrape_data(auction_selected, title_selected):
     auction_specs_list = []
     for item in copy_of_select_auction_items:
         auction_specs_list.append(item.specs().split(','))
     data_frame = pandas.DataFrame(auction_specs_list, columns=SELECT_COLUMNS)
     now = dt.datetime.now()
 
-    writer = pandas.ExcelWriter(f'{now.month}{now.day}{now.year}-{now.hour}h{now.minute}m f_Auction Data.xls')
+    writer = pandas.ExcelWriter(f'{title_selected}{now.month}{now.day}{now.year}-{now.hour}h{now.minute}m f_Auction Data.xls')
     data_frame.to_excel(writer, sheet_name=f"{auction_selected} Auctions", index=False)
     writer.save()
 

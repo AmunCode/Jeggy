@@ -40,7 +40,7 @@ def write_A_select_auction_data():
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_filtered_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions", "A-grade-")
 
 
 def write_B_select_auction_data():
@@ -49,7 +49,7 @@ def write_B_select_auction_data():
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_filtered_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions", "B-grade-")
 
 
 def write_C_select_auction_data():
@@ -58,7 +58,7 @@ def write_C_select_auction_data():
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_filtered_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions", "C_Grade-")
 
 
 def write_apple_select_auction_data():
@@ -67,7 +67,7 @@ def write_apple_select_auction_data():
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_filtered_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions", "Apple-")
 
 
 def write_samsung_select_auction_data():
@@ -76,7 +76,7 @@ def write_samsung_select_auction_data():
     print(len(stuff))
     scrapes.copy_of_select_auction_items = stuff
     print(len(scrapes.select_auction_items))
-    scrapes.write_filtered_scrape_data("select auctions")
+    scrapes.write_filtered_scrape_data("select auctions", "Samsung-")
 
 # ------------------------- GUI WINDOW --------------------------------------------------- #
 # ------------------------- GUI WINDOW --------------------------------------------------- #
