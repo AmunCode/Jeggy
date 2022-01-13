@@ -1,3 +1,6 @@
+""" module contains auction classes"""
+
+
 class Auction:
 
     def __init__(self, ID, model, gigs, grade, count, price, listing):
@@ -10,12 +13,12 @@ class Auction:
         self.link = listing
 
     def specs(self):
-        return (
-                    self.ID + ', ' + self.model + ', ' + self.gig + ', ' + self.grade + ', ' + self.count + ', ' + self.price + ', ' + self.link)
+        return self.ID + ', ' + self.model + ', ' + self.gig + ', ' + self.grade + ', ' + self.count + ', ' + self.price + ', ' + self.link
 
 
 class SupAuction:
-    def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):
+    def __init__(self, startIndex, manifest, ID='No ID', price='No price',
+                 listing='No link'):
         self.ID = ID
         try:
             self.make = manifest[startIndex].split()[1]
@@ -41,11 +44,10 @@ class SupAuction:
         self.link = listing
 
     def specs(self):
-        # return(self.ID+', '+self.make+', '+self.model+', '+self.grade+', '+self.count+', '+str(self.price)+', '+self.description+','
-        #        + self.category+', '+self.network+', '+self.fID+', '+self.fName+', '+self.currency+', '+self.capacity+', '+self.link)
         return (str(self.ID) + ', ' + str(self.make) + ', ' + self.model + ', ' + self.grade + ', ' + self.count + ', ' +
                 str(self.price) + ', ' + str(self.description) + ', ' + str(self.network) + ', ' + str(self.capacity) +
                 ', ' + str(self.link))
+
 
 class SelectAuction:
     def __init__(self, startIndex, manifest, ID='No ID', price='No price', listing='No link'):

@@ -1,6 +1,7 @@
-import auctions
+"""The module contains all the filter search functions"""
 
-def search_for_a_grade(list_to_check):
+
+def search_for_a_grade(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'A' in item.grade:
@@ -8,7 +9,7 @@ def search_for_a_grade(list_to_check):
     return selected
 
 
-def search_for_b_grade(list_to_check):
+def search_for_b_grade(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'B' in item.grade:
@@ -16,7 +17,7 @@ def search_for_b_grade(list_to_check):
     return selected
 
 
-def search_for_c_grade(list_to_check):
+def search_for_c_grade(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'C' in item.grade:
@@ -24,7 +25,7 @@ def search_for_c_grade(list_to_check):
     return selected
 
 
-def search_for_d_grade(list_to_check):
+def search_for_d_grade(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'D' in item.grade:
@@ -32,7 +33,7 @@ def search_for_d_grade(list_to_check):
     return selected
 
 
-def search_for_apple(list_to_check):
+def search_for_apple(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'apple' in item.make.lower():
@@ -40,7 +41,7 @@ def search_for_apple(list_to_check):
     return selected
 
 
-def search_for_samsung(list_to_check):
+def search_for_samsung(list_to_check: list) -> list:
     selected = []
     for item in list_to_check:
         if 'samsung' in item.make.lower():
