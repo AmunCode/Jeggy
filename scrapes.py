@@ -8,8 +8,8 @@ import time
 
 start_time = time.time()
 
-BSTOCK_USER_NAME = 'gregory@1804group.com'
-BSTOCK_PW = 'Adoune#1031'
+BSTOCK_USER_NAME = ''
+BSTOCK_PW = ''
 AUTH_URL = 'https://auth.bstock.com/oauth2/authorize'
 SELECT_COLUMNS = ['ID', 'Make', 'Model', 'Grade', 'Count', 'Price', 'Description', 'Network', 'Capacity', 'Auction URL']
 
